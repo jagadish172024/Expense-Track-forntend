@@ -1,67 +1,38 @@
+// webpack.config.js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './index.js',
-  mode: 'production',
+  entry: './src/index.js', // 👈 make sure this path exists
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    clean: true,
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        },
+        use: 'babel-loader',
       },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
-    ]
+    ],
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html'
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: 'public',
-          to: '',
-          globOptions: {
-            ignore: ['**/index.html'],
-          },
-        },
-      ],
+      template: './public/index.html', // 👈 adjust path if needed
     }),
   ],
   devServer: {
+    static: './dist',
     historyApiFallback: true,
-    static: {
-      directory: path.resolve(__dirname, 'public'),
-    },
-    // contentBase: path.join(__dirname, 'public'),
-    // publicPath: '/',
-    compress: true,
-    port: 9000,
-    open: true,
-    // Proxy requests to the backend server
-    proxy: [{
-      context: ['/api'],
-      target: 'http://localhost:8080',
-      logLevel: 'debug' /*optional*/,
-      pathRewrite: { '^/api': '' },
-      changeOrigin: true,
-      secure: false,
-    }],
-  }
+    port: 3000,
+  },
 };
-
