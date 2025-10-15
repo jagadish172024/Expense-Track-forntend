@@ -1,9 +1,10 @@
 // webpack.config.js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const index = require('./src/index.js');
 
 module.exports = {
-  entry: './src/index.js', // 👈 make sure this path exists
+  entry: index,
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
